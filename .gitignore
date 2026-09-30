@@ -2,7 +2,7 @@ node_modules
 .vercel
 .nitro
 .output
-dist
+/dist
 .env
 .env.*
 screenshots
