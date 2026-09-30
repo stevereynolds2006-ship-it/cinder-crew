@@ -9,7 +9,7 @@ const src = fileURLToPath(new URL("./src", import.meta.url));
 /** Static playable preview for GitHub Pages. The furnace board stays in this browser. */
 export default defineConfig({
   root,
-  base: "/cinder-crew/",
+  base: "./",
   publicDir: fileURLToPath(new URL("./public", import.meta.url)),
   plugins: [tailwindcss(), react()],
   resolve: {
