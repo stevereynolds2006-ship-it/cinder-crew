@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Trophy } from "lucide-react";
-import { listBoard, postScore, type BoardRow } from "./board";
+import { listBoard, postScore, type BoardRow } from "@/game/board";
 import { parseCallsign } from "./shift";
 
 type Props = {

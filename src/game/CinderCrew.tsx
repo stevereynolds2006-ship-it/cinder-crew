@@ -4,7 +4,7 @@ import type { FriendWalletSession, FriendWalletSnapshot } from "@rarefriends/fri
 import { playCue, setMuted, unlockAudio } from "./audio";
 import { Board } from "./Board";
 import { practiceCrew, shortAddress, type CrewMember } from "./crew";
-import { confirmFriend, discoverFriends, loadSprite, type DiscoveredFriend } from "./discover";
+import { confirmFriend, discoverFriends, loadSprite, type DiscoveredFriend } from "./friends-read";
 import {
   CINDER_GAME,
   EXPECTED_REWARD,
@@ -486,7 +486,7 @@ export function CinderCrew() {
       pitRef.current?.pulse(0.2);
       persist(ledger);
       if (!member.frames && !member.pattern && !member.standIn) {
-        void loadSprite({ data: { tokenId: member.id } })
+        void loadSprite(member.id)
           .then((art) => {
             setRoster((current) =>
               current.map((friend) =>
@@ -676,7 +676,7 @@ export function CinderCrew() {
     setWalletNote("");
     setError("");
     try {
-      const discovered = await discoverFriends({ data: { account: nextAccount } });
+      const discovered = await discoverFriends(nextAccount);
       if (discovered.friends.length === 0) {
         setWalletNote(
           discovered.hiddenCount
@@ -687,7 +687,7 @@ export function CinderCrew() {
       }
       const first = discovered.friends[0];
       if (!first) return;
-      const gate = await confirmFriend({ data: { account: nextAccount, tokenId: first.id } });
+      const gate = await confirmFriend(nextAccount, first.id);
       if (!gate.eligible) {
         setWalletNote("That Friend isn't a hardwired generation 1 or higher on this wallet.");
         return;
@@ -715,7 +715,7 @@ export function CinderCrew() {
     setError("");
     if (mode === "wallet" && account) {
       setBusyLabel("Checking ownership…");
-      void confirmFriend({ data: { account, tokenId: member.id } })
+      void confirmFriend(account, member.id)
         .then((gate) => {
           if (!gate.eligible) {
             setError("That Friend is no longer eligible.");
